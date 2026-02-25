@@ -10,6 +10,8 @@ import 'chooseable_problem.dart';
 import "dart:io";
 import "dart:math";
 
+import "utils/two_mock.dart";
+
 /// Descending Ordered grade enums
 enum Grade { APlus, A, BPlus, B, CPlus, C, DPlus, D, F }
 
@@ -19,8 +21,54 @@ class ProblemTwo implements IChooseableProblem {
   void getData() {
     bool _continue = true;
 
-    stdout.write("\npress `q` to stop input sequence\n\n");
+    // this is going to be SO redundant, it makes me cry
+
+    stdout.write("Use Mock Students Data? (y/n) ");
+    String _mockInput = stdin.readLineSync() ?? "";
+
+    if (_mockInput.trim().toLowerCase() == "y") {
+      _continue = false;
+      var inputs = generateMockStudentData();
+
+      studentsData = inputs.map((k, v) {
+        Grade? gradeEnum;
+
+        switch (v.toLowerCase()) {
+          case "a+":
+            gradeEnum = Grade.APlus;
+            break;
+          case "a":
+            gradeEnum = Grade.A;
+            break;
+          case "b+":
+            gradeEnum = Grade.BPlus;
+            break;
+          case "b":
+            gradeEnum = Grade.B;
+            break;
+          case "c+":
+            gradeEnum = Grade.CPlus;
+            break;
+          case "c":
+            gradeEnum = Grade.C;
+            break;
+          case "d+":
+            gradeEnum = Grade.DPlus;
+            break;
+          case "d":
+            gradeEnum = Grade.D;
+            break;
+          case "f":
+            gradeEnum = Grade.F;
+            break;
+        }
+
+        return MapEntry(k, gradeEnum!);
+      });
+    }
+
     while (_continue) {
+      stdout.write("\npress `q` to stop input sequence\n");
       sleep(Duration(milliseconds: 500));
       stdout.write("\nEnter Comma-separated Name, Grade pair: ");
       var input = stdin.readLineSync() ?? "";
