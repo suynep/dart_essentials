@@ -2,6 +2,21 @@
 
 > Contains solved problems for Week 02 of Internship. 
 
+## Running Locally
+
+1. Clone the repo:
+```bash
+git clone https://github.com/suynep/dart_essentials.git && cd dart_essentials/
+```
+2. Sync packages ([`lorem_ipsum`](https://pub.dev/packages/lorem_ipsum/) only)
+```bash
+dart pub get
+```
+3. Run
+```bash
+dart run
+```
+
 ## Problems 
 
 ### ![SOLVED] Project 1: Number List Analyzer
