@@ -12,25 +12,6 @@ import "dart:math";
 
 import "utils/two_mock.dart";
 
-void display(Map<String, Grade> studentsData) {
-  const nameFieldLength = 40;
-  const gradeFieldLength = 40;
-
-  print("+${('-' * nameFieldLength)}+${('-' * gradeFieldLength)}+");
-  print(
-    "|${"name".padRight(nameFieldLength)}|${"grade".padRight(gradeFieldLength)}|",
-  );
-  print("+${('-' * nameFieldLength)}+${('-' * gradeFieldLength)}+");
-
-  studentsData.forEach((key, value) {
-    print(
-      "|${key.padRight(nameFieldLength)}|${value.name.padRight(gradeFieldLength)}|",
-    );
-  });
-
-  print("+${('-' * nameFieldLength)}+${('-' * gradeFieldLength)}+");
-}
-
 /// Descending Ordered grade enums
 enum Grade { APlus, A, BPlus, B, CPlus, C, DPlus, D, F }
 
@@ -139,26 +120,26 @@ class ProblemTwo implements IChooseableProblem {
     }
   }
 
-  void wrangleAndCompute() {
-    void printStudents(Map<String, Grade> _studentsData) {
-      const nameFieldLength = 40;
-      const gradeFieldLength = 40;
+  void printStudents(Map<String, Grade> _studentsData) {
+    const nameFieldLength = 40;
+    const gradeFieldLength = 40;
 
-      print("+${('-' * nameFieldLength)}+${('-' * gradeFieldLength)}+");
+    print("+${('-' * nameFieldLength)}+${('-' * gradeFieldLength)}+");
+    print(
+      "|${"name".padRight(nameFieldLength)}|${"grade".padRight(gradeFieldLength)}|",
+    );
+    print("+${('-' * nameFieldLength)}+${('-' * gradeFieldLength)}+");
+
+    _studentsData.forEach((key, value) {
       print(
-        "|${"name".padRight(nameFieldLength)}|${"grade".padRight(gradeFieldLength)}|",
+        "|${key.padRight(nameFieldLength)}|${value.name.padRight(gradeFieldLength)}|",
       );
-      print("+${('-' * nameFieldLength)}+${('-' * gradeFieldLength)}+");
+    });
 
-      _studentsData.forEach((key, value) {
-        print(
-          "|${key.padRight(nameFieldLength)}|${value.name.padRight(gradeFieldLength)}|",
-        );
-      });
+    print("+${('-' * nameFieldLength)}+${('-' * gradeFieldLength)}+");
+  }
 
-      print("+${('-' * nameFieldLength)}+${('-' * gradeFieldLength)}+");
-    }
-
+  void wrangleAndCompute() {
     bool _continue = true;
 
     stdout.write("""
@@ -361,9 +342,7 @@ q: quit
 
   void display() {
     print("Final Records:\n");
-    for (var k in studentsData.keys) {
-      print("$k: ${studentsData[k]}");
-    }
+    printStudents(studentsData);
     print("\n");
     print("Exited Successfully.");
   }
