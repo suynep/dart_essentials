@@ -9,38 +9,31 @@
 import 'dart:io';
 
 import 'chooseable_problem.dart';
+import 'utils/three_mock.dart';
 
 class ProblemThree implements IChooseableProblem {
   String input = "";
   Map<String, dynamic> output = Map();
+  bool useMockData = false;
 
   String convertToTitlecase(String data) {
-    const minorWords = [
-      "and",
-      "but",
-      "or",
-      "a",
-      "an",
-      "the",
-      "in",
-      "on",
-      "to",
-      "is",
-    ];
-
     var splitWords = data.split(" ");
 
     var titleCaseData = "";
 
+    print(splitWords);
+
     splitWords.asMap().forEach((index, word) {
-      if (index == 0) {
-        titleCaseData =
-            "$titleCaseData ${word[0].toUpperCase()}${word.substring(1)}";
-      } else if (!minorWords.contains(word) && word.length > 1) {
-        titleCaseData =
-            "$titleCaseData ${word[0].toUpperCase()}${word.substring(1)}";
-      } else {
-        titleCaseData = "$titleCaseData $word";
+      if (word.isNotEmpty) {
+        if (index == 0) {
+          titleCaseData =
+              "$titleCaseData ${word[0].toUpperCase()}${word.substring(1)}";
+        } else if (!minorWords.contains(word) && word.length > 1) {
+          titleCaseData =
+              "$titleCaseData ${word[0].toUpperCase()}${word.substring(1)}";
+        } else {
+          titleCaseData = "$titleCaseData $word";
+        }
       }
     });
 
@@ -61,9 +54,18 @@ class ProblemThree implements IChooseableProblem {
   }
 
   void getData() {
-    stdout.write("Enter a sentence: ");
-    String? _input = stdin.readLineSync();
-    input = _input ?? "";
+    stdout.write("Use mock data? (y/n) ");
+    String _mockDataInput = stdin.readLineSync() ?? "";
+
+    if (_mockDataInput.trim().toLowerCase() == "y") {
+      useMockData = true;
+      input = generateMockSentence();
+    } else {
+      useMockData = false;
+      stdout.write("Enter a sentence: ");
+      String _input = stdin.readLineSync() ?? "";
+      input = _input;
+    }
   }
 
   void wrangleAndCompute() {
@@ -73,6 +75,8 @@ class ProblemThree implements IChooseableProblem {
         .split(RegExp(r"[.?!]+"))
         .map((sentence) => sentence.trim())
         .toList();
+
+    print(sentences);
 
     words = List<String>.from(words).map((word) {
       word = word.replaceAll(RegExp(r"[,.?!#@/\_-]+"), "");
