@@ -12,6 +12,25 @@ import "dart:math";
 
 import "utils/two_mock.dart";
 
+void display(Map<String, Grade> studentsData) {
+  const nameFieldLength = 40;
+  const gradeFieldLength = 40;
+
+  print("+${('-' * nameFieldLength)}+${('-' * gradeFieldLength)}+");
+  print(
+    "|${"name".padRight(nameFieldLength)}|${"grade".padRight(gradeFieldLength)}|",
+  );
+  print("+${('-' * nameFieldLength)}+${('-' * gradeFieldLength)}+");
+
+  studentsData.forEach((key, value) {
+    print(
+      "|${key.padRight(nameFieldLength)}|${value.name.padRight(gradeFieldLength)}|",
+    );
+  });
+
+  print("+${('-' * nameFieldLength)}+${('-' * gradeFieldLength)}+");
+}
+
 /// Descending Ordered grade enums
 enum Grade { APlus, A, BPlus, B, CPlus, C, DPlus, D, F }
 
@@ -121,12 +140,23 @@ class ProblemTwo implements IChooseableProblem {
   }
 
   void wrangleAndCompute() {
-    void printStudents() {
-      print("\nRecords:\n");
-      for (var k in studentsData.keys) {
-        print("$k: ${studentsData[k]}");
-      }
-      print("\n");
+    void printStudents(Map<String, Grade> _studentsData) {
+      const nameFieldLength = 40;
+      const gradeFieldLength = 40;
+
+      print("+${('-' * nameFieldLength)}+${('-' * gradeFieldLength)}+");
+      print(
+        "|${"name".padRight(nameFieldLength)}|${"grade".padRight(gradeFieldLength)}|",
+      );
+      print("+${('-' * nameFieldLength)}+${('-' * gradeFieldLength)}+");
+
+      _studentsData.forEach((key, value) {
+        print(
+          "|${key.padRight(nameFieldLength)}|${value.name.padRight(gradeFieldLength)}|",
+        );
+      });
+
+      print("+${('-' * nameFieldLength)}+${('-' * gradeFieldLength)}+");
     }
 
     bool _continue = true;
@@ -140,10 +170,10 @@ class ProblemTwo implements IChooseableProblem {
 5: filter by grade range <grade_1, grade_2>
 q: quit
 
-	""");
+""");
 
     while (_continue) {
-      printStudents();
+      printStudents(studentsData);
       stdout.write("\nEnter choice: ");
       var input = stdin.readLineSync();
       input = input ?? "";
@@ -232,9 +262,12 @@ q: quit
 
           print("\nTop Performers: ");
           sleep(Duration(milliseconds: 500));
+          Map<String, Grade> topPerformers = {};
           studentsData.forEach((key, value) {
-            if (value == _min) print("$key: $value");
+            if (value == _min) topPerformers[key] = value;
           });
+
+          printStudents(topPerformers);
           break;
 
         case "5":
@@ -311,11 +344,14 @@ q: quit
 
           gradeOneEnum = gradeOneEnum ?? Grade.F;
           gradeTwoEnum = gradeTwoEnum ?? Grade.F;
+          Map<String, Grade> rangeData = {};
           studentsData.forEach((k, v) {
             if (v.index >= gradeOneEnum!.index &&
                 v.index <= gradeTwoEnum!.index)
-              print("$k: $v");
+              rangeData[k] = v;
           });
+
+          printStudents(rangeData);
           sleep(Duration(milliseconds: 500));
 
           break;
