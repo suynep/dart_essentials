@@ -3,6 +3,7 @@ import 'dart:io';
 import '../problems/one.dart';
 import '../problems/two.dart';
 import '../problems/three.dart';
+import '../problems/four.dart';
 import '../problems/chooseable_problem.dart';
 
 void main(List<String> arguments) {
@@ -14,6 +15,7 @@ void chooseProblem() {
 1: Solve Problem 1,
 2: Solve Problem 2,
 3: Solve Problem 3,
+4: Solve Problem 4,
 
 """);
   bool _continue = true;
@@ -33,6 +35,10 @@ void chooseProblem() {
         break;
       case "3":
         solveProblem(ProblemThree());
+        _continue = false;
+        break;
+      case "4":
+        solveProblem(ProblemFour());
         _continue = false;
         break;
       default:
