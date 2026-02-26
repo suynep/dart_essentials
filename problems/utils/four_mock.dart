@@ -6,8 +6,10 @@ const numItems = 15;
 const priceMultiplier = 10;
 const quantityMultiplier = 10;
 
-List<Map<String, dynamic>> getMockCartData() {
-  List<Map<String, dynamic>> mockCart = [];
+int globalId = 0;
+
+Map<int, Map<String, dynamic>> getMockCartData() {
+  Map<int, Map<String, dynamic>> mockCart = {};
 
   /*
    * Format:
@@ -21,13 +23,14 @@ List<Map<String, dynamic>> getMockCartData() {
 
   for (int i = 0; i < numItems; i++) {
     var itemMap = {
-      "id": i + 1, // start w/ 1
       "name": loremIpsum(words: 1).trim().replaceAll(".", ""),
       "price": Random().nextDouble() * priceMultiplier,
       "quantity": Random().nextInt(20) * quantityMultiplier,
     };
 
-    mockCart.add(itemMap);
+    mockCart[globalId] = itemMap;
+
+    globalId += 1;
   }
 
   return mockCart;
