@@ -21,16 +21,16 @@ class ProblemThree implements IChooseableProblem {
 
     var titleCaseData = "";
 
-    print(splitWords);
-
     splitWords.asMap().forEach((index, word) {
       if (word.isNotEmpty) {
         if (index == 0) {
           titleCaseData =
-              "$titleCaseData ${word[0].toUpperCase()}${word.substring(1)}";
-        } else if (!minorWords.contains(word) && word.length > 1) {
+              "$titleCaseData ${word[0].toUpperCase()}${word.substring(1).toLowerCase()}";
+        } else if (!minorWords.contains(word.toLowerCase()) && word.length > 1) {
           titleCaseData =
-              "$titleCaseData ${word[0].toUpperCase()}${word.substring(1)}";
+              "$titleCaseData ${word[0].toUpperCase()}${word.substring(1).toLowerCase()}";
+        } else if (minorWords.contains(word.toLowerCase())) {
+          titleCaseData = "$titleCaseData ${word.toLowerCase()}";
         } else {
           titleCaseData = "$titleCaseData $word";
         }
@@ -75,8 +75,6 @@ class ProblemThree implements IChooseableProblem {
         .split(RegExp(r"[.?!]+"))
         .map((sentence) => sentence.trim())
         .toList();
-
-    print(sentences);
 
     words = List<String>.from(words).map((word) {
       word = word.replaceAll(RegExp(r"[,.?!#@/\_-]+"), "");
@@ -123,7 +121,6 @@ class ProblemThree implements IChooseableProblem {
 
   void display() {
     for (var entry in output.entries) {
-      print("\n");
       {
         if (entry.value is Map) {
           print(entry.key);
