@@ -18,6 +18,8 @@ class ProblemOne implements IChooseableProblem {
   void getData() {
     bool valid = true;
 
+    showBanner();
+
     do {
       input = [];
       valid = true;
@@ -72,6 +74,8 @@ class ProblemOne implements IChooseableProblem {
 4: Maximum
 5: Odds
 6: Evens
+7: Ascending Sort
+8: Descending Sort 
 
 q: exit
 """);
@@ -90,11 +94,12 @@ q: exit
       } else {
         try {
           integralInput = int.parse(choiceInput.trim());
-        } on FormatException catch (e) {
+        } on FormatException {
           if (choiceInput.trim().toLowerCase() != "q") {
             print("Cannot Parse Choice");
             valid = false;
           } else {
+            summaryBanner();
             break;
           }
         }
@@ -124,6 +129,14 @@ q: exit
             break;
           case 6:
             display("Evens");
+            valid = false;
+            break;
+          case 7:
+            display("Ascending");
+            valid = false;
+            break;
+          case 8:
+            display("Descending");
             valid = false;
             break;
           default:
@@ -201,4 +214,28 @@ q: exit
       }
     }
   }
+}
+
+void showBanner() {
+  print(r"""
+                                     ▄▄     
+                                    ██      
+ ▄           ▄              ▄    ▀▀▄██▄     
+ ████▄ ██ ██ ███▄███▄ ▄█▀█▄ ████▄██ ██ ██ ██
+ ██ ██ ██ ██ ██ ██ ██ ██▄█▀ ██   ██ ██ ██▄██
+▄██ ▀█▄▀██▀█▄██ ██ ▀█▄▀█▄▄▄▄█▀  ▄██▄██▄▄▀██▀
+                                    ██   ██ 
+                                   ▀▀  ▀▀▀  
+""");
+}
+
+void summaryBanner() {
+  print(r"""
+             ▄        ▄              ▄         
+ ▄██▀█ ██ ██ ███▄███▄ ███▄███▄ ▄▀▀█▄ ████▄██ ██
+ ▀███▄ ██ ██ ██ ██ ██ ██ ██ ██ ▄█▀██ ██   ██▄██
+█▄▄██▀▄▀██▀█▄██ ██ ▀█▄██ ██ ▀█▄▀█▄██▄█▀  ▄▄▀██▀
+                                            ██ 
+                                          ▀▀▀  
+""");
 }
