@@ -8,26 +8,26 @@
 
 import 'chooseable_problem.dart';
 import "dart:io";
-import "dart:math";
 
 import "utils/two_mock.dart";
 
 /// Descending Ordered grade enums
-enum Grade { APlus, A, BPlus, B, CPlus, C, DPlus, D, F }
+enum Grade { aPlus, A, bPlus, B, cPlus, C, dPlus, D, F }
 
 class ProblemTwo implements IChooseableProblem {
-  Map<String, Grade> studentsData = Map();
+  Map<String, Grade> studentsData = {};
 
+  @override
   void getData() {
-    bool _continue = true;
+    bool continueNext = true;
 
     // this is going to be SO redundant, it makes me cry
 
     stdout.write("Use Mock Students Data? (y/n) ");
-    String _mockInput = stdin.readLineSync() ?? "";
+    String mockInputCheck = stdin.readLineSync() ?? "";
 
-    if (_mockInput.trim().toLowerCase() == "y") {
-      _continue = false;
+    if (mockInputCheck.trim().toLowerCase() == "y") {
+      continueNext = false;
       var inputs = generateMockStudentData();
 
       studentsData = inputs.map((k, v) {
@@ -35,25 +35,25 @@ class ProblemTwo implements IChooseableProblem {
 
         switch (v.toLowerCase()) {
           case "a+":
-            gradeEnum = Grade.APlus;
+            gradeEnum = Grade.aPlus;
             break;
           case "a":
             gradeEnum = Grade.A;
             break;
           case "b+":
-            gradeEnum = Grade.BPlus;
+            gradeEnum = Grade.bPlus;
             break;
           case "b":
             gradeEnum = Grade.B;
             break;
           case "c+":
-            gradeEnum = Grade.CPlus;
+            gradeEnum = Grade.cPlus;
             break;
           case "c":
             gradeEnum = Grade.C;
             break;
           case "d+":
-            gradeEnum = Grade.DPlus;
+            gradeEnum = Grade.dPlus;
             break;
           case "d":
             gradeEnum = Grade.D;
@@ -67,7 +67,7 @@ class ProblemTwo implements IChooseableProblem {
       });
     }
 
-    while (_continue) {
+    while (continueNext) {
       stdout.write("\npress `q` to stop input sequence\n");
       sleep(Duration(milliseconds: 500));
       stdout.write("\nEnter Comma-separated Name, Grade pair: ");
@@ -84,25 +84,25 @@ class ProblemTwo implements IChooseableProblem {
 
         switch (grade) {
           case "a+":
-            gradeEnum = Grade.APlus;
+            gradeEnum = Grade.aPlus;
             break;
           case "a":
             gradeEnum = Grade.A;
             break;
           case "b+":
-            gradeEnum = Grade.BPlus;
+            gradeEnum = Grade.bPlus;
             break;
           case "b":
             gradeEnum = Grade.B;
             break;
           case "c+":
-            gradeEnum = Grade.CPlus;
+            gradeEnum = Grade.cPlus;
             break;
           case "c":
             gradeEnum = Grade.C;
             break;
           case "d+":
-            gradeEnum = Grade.DPlus;
+            gradeEnum = Grade.dPlus;
             break;
           case "d":
             gradeEnum = Grade.D;
@@ -120,7 +120,7 @@ class ProblemTwo implements IChooseableProblem {
     }
   }
 
-  void printStudents(Map<String, Grade> _studentsData) {
+  void printStudents(Map<String, Grade> localStudentsData) {
     const nameFieldLength = 40;
     const gradeFieldLength = 40;
 
@@ -130,7 +130,7 @@ class ProblemTwo implements IChooseableProblem {
     );
     print("+${('-' * nameFieldLength)}+${('-' * gradeFieldLength)}+");
 
-    _studentsData.forEach((key, value) {
+    localStudentsData.forEach((key, value) {
       print(
         "|${key.padRight(nameFieldLength)}|${value.name.padRight(gradeFieldLength)}|",
       );
@@ -139,8 +139,9 @@ class ProblemTwo implements IChooseableProblem {
     print("+${('-' * nameFieldLength)}+${('-' * gradeFieldLength)}+");
   }
 
+  @override
   void wrangleAndCompute() {
-    bool _continue = true;
+    bool continueNext = true;
 
     stdout.write("""
 
@@ -153,7 +154,7 @@ q: quit
 
 """);
 
-    while (_continue) {
+    while (continueNext) {
       printStudents(studentsData);
       stdout.write("\nEnter choice: ");
       var input = stdin.readLineSync();
@@ -166,21 +167,21 @@ q: quit
       switch (input.trim()) {
         case "1":
           stdout.write("\nEnter name: ");
-          var _input = stdin.readLineSync();
-          _input = _input ?? "";
-          _input = _input.trim();
+          var innerInput = stdin.readLineSync();
+          innerInput = innerInput ?? "";
+          innerInput = innerInput.trim();
           try {
-            studentsData.remove(_input);
+            studentsData.remove(innerInput);
           } catch (e) {
             print("\nStudent not found: $e");
           }
           break;
         case "2":
           stdout.write("\nEnter name, grade (csv): ");
-          var _input = stdin.readLineSync();
-          _input = _input ?? "";
+          var innerInput = stdin.readLineSync();
+          innerInput = innerInput ?? "";
 
-          var [student, grade] = _input
+          var [student, grade] = innerInput
               .split(",")
               .map((ele) => ele.trim())
               .toList();
@@ -190,25 +191,25 @@ q: quit
 
             switch (grade.toLowerCase()) {
               case "a+":
-                gradeEnum = Grade.APlus;
+                gradeEnum = Grade.aPlus;
                 break;
               case "a":
                 gradeEnum = Grade.A;
                 break;
               case "b+":
-                gradeEnum = Grade.BPlus;
+                gradeEnum = Grade.bPlus;
                 break;
               case "b":
                 gradeEnum = Grade.B;
                 break;
               case "c+":
-                gradeEnum = Grade.CPlus;
+                gradeEnum = Grade.cPlus;
                 break;
               case "c":
                 gradeEnum = Grade.C;
                 break;
               case "d+":
-                gradeEnum = Grade.DPlus;
+                gradeEnum = Grade.dPlus;
                 break;
               case "d":
                 gradeEnum = Grade.D;
@@ -237,7 +238,7 @@ q: quit
           break;
 
         case "4":
-          var _min = studentsData.values.reduce((v, e) {
+          var minimum = studentsData.values.reduce((v, e) {
             return v.index > e.index ? e : v;
           });
 
@@ -245,7 +246,7 @@ q: quit
           sleep(Duration(milliseconds: 500));
           Map<String, Grade> topPerformers = {};
           studentsData.forEach((key, value) {
-            if (value == _min) topPerformers[key] = value;
+            if (value == minimum) topPerformers[key] = value;
           });
 
           printStudents(topPerformers);
@@ -253,10 +254,10 @@ q: quit
 
         case "5":
           stdout.write("\nEnter grade range in csv form: ");
-          String? _input = stdin.readLineSync();
-          _input = _input ?? "";
+          String? innerInput = stdin.readLineSync();
+          innerInput = innerInput ?? "";
 
-          var [gradeOne, gradeTwo] = _input
+          var [gradeOne, gradeTwo] = innerInput
               .split(",")
               .map((ele) => ele.trim())
               .toList();
@@ -264,25 +265,25 @@ q: quit
           Grade? gradeOneEnum;
           switch (gradeOne.toLowerCase()) {
             case "a+":
-              gradeOneEnum = Grade.APlus;
+              gradeOneEnum = Grade.aPlus;
               break;
             case "a":
               gradeOneEnum = Grade.A;
               break;
             case "b+":
-              gradeOneEnum = Grade.BPlus;
+              gradeOneEnum = Grade.bPlus;
               break;
             case "b":
               gradeOneEnum = Grade.B;
               break;
             case "c+":
-              gradeOneEnum = Grade.CPlus;
+              gradeOneEnum = Grade.cPlus;
               break;
             case "c":
               gradeOneEnum = Grade.C;
               break;
             case "d+":
-              gradeOneEnum = Grade.DPlus;
+              gradeOneEnum = Grade.dPlus;
               break;
             case "d":
               gradeOneEnum = Grade.D;
@@ -295,25 +296,25 @@ q: quit
           Grade? gradeTwoEnum;
           switch (gradeTwo.toLowerCase()) {
             case "a+":
-              gradeTwoEnum = Grade.APlus;
+              gradeTwoEnum = Grade.aPlus;
               break;
             case "a":
               gradeTwoEnum = Grade.A;
               break;
             case "b+":
-              gradeTwoEnum = Grade.BPlus;
+              gradeTwoEnum = Grade.bPlus;
               break;
             case "b":
               gradeTwoEnum = Grade.B;
               break;
             case "c+":
-              gradeTwoEnum = Grade.CPlus;
+              gradeTwoEnum = Grade.cPlus;
               break;
             case "c":
               gradeTwoEnum = Grade.C;
               break;
             case "d+":
-              gradeTwoEnum = Grade.DPlus;
+              gradeTwoEnum = Grade.dPlus;
               break;
             case "d":
               gradeTwoEnum = Grade.D;
@@ -328,8 +329,9 @@ q: quit
           Map<String, Grade> rangeData = {};
           studentsData.forEach((k, v) {
             if (v.index >= gradeOneEnum!.index &&
-                v.index <= gradeTwoEnum!.index)
+                v.index <= gradeTwoEnum!.index) {
               rangeData[k] = v;
+            }
           });
 
           printStudents(rangeData);
@@ -340,6 +342,7 @@ q: quit
     }
   }
 
+  @override
   void display() {
     print("Final Records:\n");
     printStudents(studentsData);

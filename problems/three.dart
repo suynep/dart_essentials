@@ -13,7 +13,7 @@ import 'utils/three_mock.dart';
 
 class ProblemThree implements IChooseableProblem {
   String input = "";
-  Map<String, dynamic> output = Map();
+  Map<String, dynamic> output = {};
   bool useMockData = false;
 
   String convertToTitlecase(String data) {
@@ -26,7 +26,8 @@ class ProblemThree implements IChooseableProblem {
         if (index == 0) {
           titleCaseData =
               "$titleCaseData ${word[0].toUpperCase()}${word.substring(1).toLowerCase()}";
-        } else if (!minorWords.contains(word.toLowerCase()) && word.length > 1) {
+        } else if (!minorWords.contains(word.toLowerCase()) &&
+            word.length > 1) {
           titleCaseData =
               "$titleCaseData ${word[0].toUpperCase()}${word.substring(1).toLowerCase()}";
         } else if (minorWords.contains(word.toLowerCase())) {
@@ -53,21 +54,23 @@ class ProblemThree implements IChooseableProblem {
     return uniqueWords;
   }
 
+  @override
   void getData() {
     stdout.write("Use mock data? (y/n) ");
-    String _mockDataInput = stdin.readLineSync() ?? "";
+    String mockDataInput = stdin.readLineSync() ?? "";
 
-    if (_mockDataInput.trim().toLowerCase() == "y") {
+    if (mockDataInput.trim().toLowerCase() == "y") {
       useMockData = true;
       input = generateMockSentence();
     } else {
       useMockData = false;
       stdout.write("Enter a sentence: ");
-      String _input = stdin.readLineSync() ?? "";
-      input = _input;
+      String localInput = stdin.readLineSync() ?? "";
+      input = localInput;
     }
   }
 
+  @override
   void wrangleAndCompute() {
     var words = input.split(" ");
     var chars = words.expand((e) => e.split("")).toList();
@@ -90,21 +93,21 @@ class ProblemThree implements IChooseableProblem {
       List.filled(Set.from(chars).length, 0),
     );
 
-    words.forEach((word) {
+    for (var word in words) {
       if (wordsFrequency.keys.contains(word)) {
         wordsFrequency[word] = wordsFrequency[word]! + 1;
       } else {
         wordsFrequency[word] = 1;
       }
-    });
+    }
 
-    chars.forEach((char) {
+    for (var char in chars) {
       if (charsFrequency.keys.contains(char)) {
         charsFrequency[char] = charsFrequency[char]! + 1;
       } else {
         charsFrequency[char] = 1;
       }
-    });
+    }
 
     output["wordsFrequency"] = wordsFrequency;
     output["charsFrequency"] = charsFrequency;
@@ -119,6 +122,7 @@ class ProblemThree implements IChooseableProblem {
     output["uniqueWords"] = removeCommonWords(wordsFrequency);
   }
 
+  @override
   void display() {
     for (var entry in output.entries) {
       {

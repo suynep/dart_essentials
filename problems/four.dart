@@ -13,6 +13,7 @@ class ProblemFour implements IChooseableProblem {
   late final List<Map<String, dynamic>> cartData;
   Map<String, dynamic> outputs = {};
 
+  @override
   void getData() {
     // !TODO: allow manual inputs
     bool mockData = true;
@@ -23,13 +24,14 @@ class ProblemFour implements IChooseableProblem {
   }
 
   /// call after getData
+  @override
   void wrangleAndCompute() {
     double calculateTotalPrice() {
       double total = 0;
 
-      cartData.forEach((item) {
+      for (var item in cartData) {
         total += item["price"] * item["quantity"];
-      });
+      }
 
       return total;
     }
@@ -50,6 +52,7 @@ class ProblemFour implements IChooseableProblem {
     ).toStringAsFixed(2);
   }
 
+  @override
   void display() {
     void displayReceipt() {
       /*
@@ -65,7 +68,11 @@ class ProblemFour implements IChooseableProblem {
 
       const fieldLength = 25; // 30 chars per field
 
-      print("RECEIPT".padLeft((fieldLength * 1.5).truncate()).padRight((fieldLength * 1.5).truncate()));
+      print(
+        "RECEIPT"
+            .padLeft((fieldLength * 1.5).truncate())
+            .padRight((fieldLength * 1.5).truncate()),
+      );
       print("+${'-' * fieldLength}+${'-' * fieldLength}+${'-' * fieldLength}+");
       print(
         "|${"item name".padRight(fieldLength)}|${"quantity".padRight(fieldLength)}|${"price".padRight(fieldLength)}|",
