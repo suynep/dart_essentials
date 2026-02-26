@@ -3,3 +3,6 @@
 .dart_tool/
 
 **/*.log
+
+# random file for testing a few shenanigans
+random.dart
