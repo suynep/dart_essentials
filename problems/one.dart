@@ -132,15 +132,8 @@ q: exit
             break;
         }
       } else {
-        switch ((choiceInput ?? "").trim().toLowerCase()) {
-          case "q":
-            valid = true;
-            break;
-          default:
-            print("Press `q` to exit");
-            valid = false;
-            break;
-        }
+        print("Press `q` to exit");
+        valid = false;
       }
     } while (!valid);
   }
