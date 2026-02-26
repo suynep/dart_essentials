@@ -110,6 +110,7 @@ class ProblemThree implements IChooseableProblem {
     }
 
     output["wordsFrequency"] = wordsFrequency;
+    output["uniqueWords"] = removeCommonWords(wordsFrequency);
     output["charsFrequency"] = charsFrequency;
     output["sentences"] = sentences;
     output["titleCaseSentences"] = sentences.map(convertToTitlecase).toList();
@@ -119,22 +120,238 @@ class ProblemThree implements IChooseableProblem {
     output["lowerCaseSentences"] = sentences
         .map((w) => w.toLowerCase())
         .toList();
-    output["uniqueWords"] = removeCommonWords(wordsFrequency);
   }
 
   @override
   void display() {
+    int wordFieldLength = 20;
+    int wordsPerLine = 7;
+    int charFieldLength = 10;
+    int charsPerLine = 14;
+
     for (var entry in output.entries) {
       {
         if (entry.value is Map) {
-          print(entry.key);
-          for (var subEntry in entry.value.entries) {
-            print("${subEntry.key}: ${subEntry.value}");
+          switch (entry.key) {
+            case "wordsFrequency":
+              categoryBanner("words");
+              String wordsFrequencyString = "";
+              int count = 0;
+              for (var subEntry in entry.value.entries) {
+                if (subEntry.key == "\n") {
+                  wordsFrequencyString +=
+                      r"\n" + "${subEntry.value}".padRight(wordFieldLength);
+                } else {
+                  wordsFrequencyString += "${subEntry.key} ${subEntry.value}"
+                      .padRight(wordFieldLength);
+                }
+                count += 1;
+                if (count == wordsPerLine) {
+                  wordsFrequencyString += "\n";
+                  count = 0;
+                }
+              }
+              wordsFrequencyString += "\n";
+              print(wordsFrequencyString);
+              break;
+            case "uniqueWords":
+              categoryBanner("unique");
+              String wordsFrequencyString = "";
+              int count = 0;
+              for (var subEntry in entry.value.entries) {
+                if (subEntry.key == "\n") {
+                  wordsFrequencyString +=
+                      r"\n" + "${subEntry.value}".padRight(wordFieldLength);
+                } else {
+                  wordsFrequencyString += "${subEntry.key} ${subEntry.value}"
+                      .padRight(wordFieldLength);
+                }
+                count += 1;
+                if (count == wordsPerLine) {
+                  wordsFrequencyString += "\n";
+                  count = 0;
+                }
+              }
+              wordsFrequencyString += "\n";
+              print(wordsFrequencyString);
+              break;
+            case "charsFrequency":
+              categoryBanner("chars");
+              String charsFrequencyString = "";
+              int count = 0;
+              for (var subEntry in entry.value.entries) {
+                if (subEntry.key == "\n") {
+                  charsFrequencyString +=
+                      r"\n" + "${subEntry.value}".padRight(charFieldLength);
+                } else {
+                  charsFrequencyString += "${subEntry.key} ${subEntry.value}"
+                      .padRight(charFieldLength);
+                }
+                count += 1;
+                if (count == charsPerLine) {
+                  charsFrequencyString += "\n";
+                  count = 0;
+                }
+              }
+              charsFrequencyString += "\n";
+              print(charsFrequencyString);
+              break;
           }
         } else {
-          print("${entry.key}: ${entry.value}");
+          switch (entry.key) {
+            case "upperCaseSentences":
+              categoryBanner("upperCase");
+              break;
+
+            case "lowerCaseSentences":
+              categoryBanner("lowerCase");
+              break;
+
+            case "sentences":
+              categoryBanner("sentences");
+              break;
+
+            case "titleCaseSentences":
+              categoryBanner("titleCase");
+              break;
+          }
+          print(entry.value.join(" "));
         }
       }
     }
   }
 }
+
+void categoryBanner(String category) {
+  switch (category) {
+    case "words":
+      print(r"""
+                        █▄      
+                ▄       ██      
+▀█▄ █▄ ██▀▄███▄ ████▄▄████ ▄██▀█
+ ██▄██▄██ ██ ██ ██   ██ ██ ▀███▄
+  ▀██▀██▀▄▀███▀▄█▀  ▄█▀████▄▄██▀
+""");
+      break;
+    case "chars":
+      print(r"""
+       █▄                    
+       ██          ▄         
+ ▄███▀ ████▄ ▄▀▀█▄ ████▄▄██▀█
+ ██    ██ ██ ▄█▀██ ██   ▀███▄
+▄▀███▄▄██ ██▄▀█▄██▄█▀  █▄▄██▀
+
+""");
+      break;
+    case "unique":
+      print(r"""
+       ▄     ▀▀                  
+ ██ ██ ████▄ ██ ▄████ ██ ██ ▄█▀█▄
+ ██ ██ ██ ██ ██ ██ ██ ██ ██ ██▄█▀
+▄▀██▀█▄██ ▀█▄██▄▀████▄▀██▀█▄▀█▄▄▄
+                   ██            
+                    ▀            
+""");
+      break;
+
+    case "sentences":
+      print("""
+                   █▄                              
+             ▄    ▄██▄      ▄                      
+ ▄██▀█ ▄█▀█▄ ████▄ ██ ▄█▀█▄ ████▄ ▄███▀ ▄█▀█▄ ▄██▀█
+ ▀███▄ ██▄█▀ ██ ██ ██ ██▄█▀ ██ ██ ██    ██▄█▀ ▀███▄
+█▄▄██▀▄▀█▄▄▄▄██ ▀█▄██▄▀█▄▄▄▄██ ▀█▄▀███▄▄▀█▄▄▄█▄▄██▀
+""");
+      break;
+
+    case "lowerCase":
+      print("""
+ ▄▄                                                   
+  ██                                                  
+  ██                      ▄                           
+  ██ ▄███▄▀█▄ █▄ ██▀▄█▀█▄ ████▄▄███▀ ▄▀▀█▄ ▄██▀█ ▄█▀█▄
+  ██ ██ ██ ██▄██▄██ ██▄█▀ ██   ██    ▄█▀██ ▀███▄ ██▄█▀
+ ▄██▄▀███▀  ▀██▀██▀▄▀█▄▄▄▄█▀  ▄▀███▄▄▀█▄███▄▄██▀▄▀█▄▄▄
+""");
+      break;
+
+    case "upperCase":
+      print("""
+                         ▄                           
+ ██ ██ ████▄ ████▄ ▄█▀█▄ ████▄▄███▀ ▄▀▀█▄ ▄██▀█ ▄█▀█▄
+ ██ ██ ██ ██ ██ ██ ██▄█▀ ██   ██    ▄█▀██ ▀███▄ ██▄█▀
+▄▀██▀█▄████▀▄████▀▄▀█▄▄▄▄█▀  ▄▀███▄▄▀█▄███▄▄██▀▄▀█▄▄▄
+       ██    ██                                      
+       ▀     ▀                                       
+""");
+      break;
+
+    case "titleCase":
+      print("""
+         ▄▄                               
+ █▄    █▄ ██                              
+▄██▄▀▀▄██▄██                              
+ ██ ██ ██ ██ ▄█▀█▄ ▄███▀ ▄▀▀█▄ ▄██▀█ ▄█▀█▄
+ ██ ██ ██ ██ ██▄█▀ ██    ▄█▀██ ▀███▄ ██▄█▀
+▄██▄██▄██▄██▄▀█▄▄▄▄▀███▄▄▀█▄███▄▄██▀▄▀█▄▄▄
+""");
+      break;
+  }
+}
+
+// void printTable(
+//   dynamic records, {
+//   required List<String> titles,
+//   int columnSize = 50,
+// }) {
+//   void printHeader() {
+//     for (int i = 0; i < 3; i++) {
+//       switch (i) {
+//         case 0:
+//           String borderString = "+";
+//           for (var _ in titles) {
+//             borderString += "${"-" * columnSize}+";
+//           }
+//           print(borderString);
+
+//         case 1:
+//           String titleString = "|";
+//           for (var t in titles) {
+//             titleString += "${t.padRight(columnSize)}|";
+//           }
+//           print(titleString);
+
+//         case 2:
+//           String borderString = "+";
+//           for (var _ in titles) {
+//             borderString += "${"-" * columnSize}+";
+//           }
+//           print(borderString);
+//       }
+//     }
+//   }
+
+//   void printBody() {
+//     if (records is List) {
+//       for (int i = 0; i < records.length; i++) {
+//         String rowString = "|";
+//         for (var ele in records[i]) {
+//           rowString += "${ele.toString().padRight(columnSize)}|";
+//         }
+//         print(rowString);
+//       }
+//     }
+//   }
+
+//   void printTrailer() {
+//     String borderString = "+";
+//     for (var _ in titles) {
+//       borderString += "${"-" * columnSize}+";
+//     }
+//     print(borderString);
+//   }
+
+//   printHeader();
+//   printBody();
+//   printTrailer();
+// }
