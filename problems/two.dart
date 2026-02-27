@@ -24,6 +24,41 @@ class ProblemTwo implements IChooseableProblem {
     print("A+ A B+ B C+ C D+ D F");
   }
 
+  Grade stringToEnum(String grade) {
+    Grade gradeEnum = Grade.F;
+    switch (grade.trim().toLowerCase()) {
+      case "a+":
+        gradeEnum = Grade.aPlus;
+        break;
+      case "a":
+        gradeEnum = Grade.A;
+        break;
+      case "b+":
+        gradeEnum = Grade.bPlus;
+        break;
+      case "b":
+        gradeEnum = Grade.B;
+        break;
+      case "c+":
+        gradeEnum = Grade.cPlus;
+        break;
+      case "c":
+        gradeEnum = Grade.C;
+        break;
+      case "d+":
+        gradeEnum = Grade.dPlus;
+        break;
+      case "d":
+        gradeEnum = Grade.D;
+        break;
+      case "f":
+        gradeEnum = Grade.F;
+        break;
+    }
+
+    return gradeEnum;
+  }
+
   @override
   void getData() {
     bool continueNext = true;
@@ -90,42 +125,11 @@ class ProblemTwo implements IChooseableProblem {
 
       try {
         var [student, grade] = input.split(",").map((e) => e.trim()).toList();
-        grade = grade.toLowerCase();
-        Grade? gradeEnum;
-
-        switch (grade) {
-          case "a+":
-            gradeEnum = Grade.aPlus;
-            break;
-          case "a":
-            gradeEnum = Grade.A;
-            break;
-          case "b+":
-            gradeEnum = Grade.bPlus;
-            break;
-          case "b":
-            gradeEnum = Grade.B;
-            break;
-          case "c+":
-            gradeEnum = Grade.cPlus;
-            break;
-          case "c":
-            gradeEnum = Grade.C;
-            break;
-          case "d+":
-            gradeEnum = Grade.dPlus;
-            break;
-          case "d":
-            gradeEnum = Grade.D;
-            break;
-          case "f":
-            gradeEnum = Grade.F;
-            break;
-        }
+        Grade gradeEnum = stringToEnum(grade);
 
         studentsData[globalId] = {
           "name": student,
-          "grade": gradeEnum ?? Grade.F,
+          "grade": gradeEnum,
         }; // for the time being, revert to F
         globalId++;
       } catch (e) {
@@ -179,42 +183,11 @@ q: quit
                 .split(",")
                 .map((e) => e.trim())
                 .toList();
-            grade = grade.toLowerCase();
-            Grade? gradeEnum;
-
-            switch (grade) {
-              case "a+":
-                gradeEnum = Grade.aPlus;
-                break;
-              case "a":
-                gradeEnum = Grade.A;
-                break;
-              case "b+":
-                gradeEnum = Grade.bPlus;
-                break;
-              case "b":
-                gradeEnum = Grade.B;
-                break;
-              case "c+":
-                gradeEnum = Grade.cPlus;
-                break;
-              case "c":
-                gradeEnum = Grade.C;
-                break;
-              case "d+":
-                gradeEnum = Grade.dPlus;
-                break;
-              case "d":
-                gradeEnum = Grade.D;
-                break;
-              case "f":
-                gradeEnum = Grade.F;
-                break;
-            }
+            Grade gradeEnum = stringToEnum(grade);
 
             studentsData[globalId] = {
               "name": student,
-              "grade": gradeEnum ?? Grade.F,
+              "grade": gradeEnum,
             }; // for the time being, revert to F
             globalId++;
           } catch (e) {
@@ -223,210 +196,148 @@ q: quit
           break;
 
         case "1":
-          stdout.write("\nEnter ID: ");
-          var innerInput = stdin.readLineSync();
-          innerInput = innerInput ?? "";
-          innerInput = innerInput.trim();
+          if (studentsData.isNotEmpty) {
+            stdout.write("\nEnter ID: ");
+            var innerInput = stdin.readLineSync();
+            innerInput = innerInput ?? "";
+            innerInput = innerInput.trim();
 
-          try {
-            int innerInputAsInt = int.parse(innerInput);
-            var justRemoved = studentsData.remove(innerInputAsInt);
-            if (justRemoved == null) {
-              print("Student not found!");
-            } else {
-              print("Removed: ");
-              PrettyPrint().printTable(
-                {innerInputAsInt: justRemoved},
-                titles: ["id", "name", "grade"],
-              );
+            try {
+              int innerInputAsInt = int.parse(innerInput);
+              var justRemoved = studentsData.remove(innerInputAsInt);
+              if (justRemoved == null) {
+                print("Student not found!");
+              } else {
+                print("Removed: ");
+                PrettyPrint().printTable(
+                  {innerInputAsInt: justRemoved},
+                  titles: ["id", "name", "grade"],
+                );
+              }
+            } on FormatException {
+              print("Cannot parse id!");
             }
-          } on FormatException {
-            print("Cannot parse id!");
+          } else {
+            print("Cannot perform on empty data");
           }
           break;
         case "2":
-          stdout.write("Enter ID: ");
-          var innerInput = stdin.readLineSync();
-          innerInput = innerInput ?? "";
-          innerInput = innerInput.trim();
+          if (studentsData.isNotEmpty) {
+            stdout.write("Enter ID: ");
+            var innerInput = stdin.readLineSync();
+            innerInput = innerInput ?? "";
+            innerInput = innerInput.trim();
 
-          try {
-            int innerInputAsInt = int.parse(innerInput);
             try {
-              stdout.write("\nEnter name, grade (csv): ");
-              var innerInput = stdin.readLineSync();
-              innerInput = innerInput ?? "";
+              int innerInputAsInt = int.parse(innerInput);
+              try {
+                stdout.write("\nEnter name, grade (csv): ");
+                var innerInput = stdin.readLineSync();
+                innerInput = innerInput ?? "";
 
-              var [student, grade] = innerInput
-                  .split(",")
-                  .map((ele) => ele.trim())
-                  .toList();
+                var [student, grade] = innerInput
+                    .split(",")
+                    .map((ele) => ele.trim())
+                    .toList();
 
-              if (studentsData.containsKey(innerInputAsInt)) {
-                Grade? gradeEnum;
+                if (studentsData.containsKey(innerInputAsInt)) {
+                  Grade gradeEnum = stringToEnum(grade);
 
-                switch (grade.toLowerCase()) {
-                  case "a+":
-                    gradeEnum = Grade.aPlus;
-                    break;
-                  case "a":
-                    gradeEnum = Grade.A;
-                    break;
-                  case "b+":
-                    gradeEnum = Grade.bPlus;
-                    break;
-                  case "b":
-                    gradeEnum = Grade.B;
-                    break;
-                  case "c+":
-                    gradeEnum = Grade.cPlus;
-                    break;
-                  case "c":
-                    gradeEnum = Grade.C;
-                    break;
-                  case "d+":
-                    gradeEnum = Grade.dPlus;
-                    break;
-                  case "d":
-                    gradeEnum = Grade.D;
-                    break;
-                  case "f":
-                    gradeEnum = Grade.F;
-                    break;
+                  studentsData[innerInputAsInt] = {
+                    "name": student,
+                    "grade": gradeEnum,
+                  }; // fallback as Grade.F
+                } else {
+                  print("\nStudent Not Found, try again!");
                 }
-                studentsData[innerInputAsInt] = {
-                  "name": student,
-                  "grade": gradeEnum ?? Grade.F,
-                }; // fallback as Grade.F
-              } else {
-                print("\nStudent Not Found, try again!");
+              } catch (e) {
+                print("\nStudent not found: $e");
               }
-            } catch (e) {
-              print("\nStudent not found: $e");
+            } on FormatException {
+              print("Cannot parse id!");
             }
-          } on FormatException {
-            print("Cannot parse id!");
+          } else {
+            print("Cannot perform on empty data");
           }
 
           break;
         case "3":
-          var total = 0;
-          for (var entry in studentsData.values) {
-            total += (entry["grade"] as Grade).index;
+          if (studentsData.isNotEmpty) {
+            var total = 0;
+            for (var entry in studentsData.values) {
+              total += (entry["grade"] as Grade).index;
+            }
+
+            int avg = total ~/ studentsData.values.length;
+
+            Grade avgGrade = Grade.values[avg];
+
+            print("\nAverage Grade: $avgGrade");
+            sleep(Duration(milliseconds: 500));
+          } else {
+            print("Cannot perform on empty data");
           }
-
-          int avg = total ~/ studentsData.values.length;
-
-          Grade avgGrade = Grade.values[avg];
-
-          print("\nAverage Grade: $avgGrade");
-          sleep(Duration(milliseconds: 500));
           break;
 
         case "4":
-          var minimum = studentsData.values.reduce((v, e) {
-            return v["grade"].index > e["grade"].index ? e : v;
-          });
+          if (studentsData.isNotEmpty) {
+            var minimum = studentsData.values.reduce((v, e) {
+              return v["grade"].index > e["grade"].index ? e : v;
+            });
 
-          print("\nTop Performers: ");
-          sleep(Duration(milliseconds: 500));
-          Map<int, Map<String, dynamic>> topPerformers = {};
-          studentsData.forEach((key, value) {
-            if (value == minimum) {
-              topPerformers[key] = value;
-            }
-          });
+            print("\nTop Performers: ");
+            sleep(Duration(milliseconds: 500));
+            Map<int, Map<String, dynamic>> topPerformers = {};
+            studentsData.forEach((key, value) {
+              if (value == minimum) {
+                topPerformers[key] = value;
+              }
+            });
 
-          PrettyPrint().printTable(
-            topPerformers,
-            titles: ["id", "name", "grade"],
-          );
+            PrettyPrint().printTable(
+              topPerformers,
+              titles: ["id", "name", "grade"],
+            );
+          } else {
+            print("Cannot perform on empty data");
+          }
           break;
 
         case "5":
-          stdout.write("\nEnter grade range in csv form: ");
-          String? innerInput = stdin.readLineSync();
-          innerInput = innerInput ?? "";
+          if (studentsData.isNotEmpty) {
+            stdout.write("\nEnter grade range in csv form: ");
+            String? innerInput = stdin.readLineSync();
+            innerInput = innerInput ?? "";
 
-          var [gradeOne, gradeTwo] = innerInput
-              .split(",")
-              .map((ele) => ele.trim())
-              .toList();
+            var [gradeOne, gradeTwo] = innerInput
+                .split(",")
+                .map((ele) => ele.trim())
+                .toList();
 
-          Grade? gradeOneEnum;
-          switch (gradeOne.toLowerCase()) {
-            case "a+":
-              gradeOneEnum = Grade.aPlus;
-              break;
-            case "a":
-              gradeOneEnum = Grade.A;
-              break;
-            case "b+":
-              gradeOneEnum = Grade.bPlus;
-              break;
-            case "b":
-              gradeOneEnum = Grade.B;
-              break;
-            case "c+":
-              gradeOneEnum = Grade.cPlus;
-              break;
-            case "c":
-              gradeOneEnum = Grade.C;
-              break;
-            case "d+":
-              gradeOneEnum = Grade.dPlus;
-              break;
-            case "d":
-              gradeOneEnum = Grade.D;
-              break;
-            case "f":
-              gradeOneEnum = Grade.F;
-              break;
+            Grade gradeOneEnum = stringToEnum(gradeOne);
+
+            Grade gradeTwoEnum = stringToEnum(gradeTwo);
+
+            gradeOneEnum = gradeOneEnum;
+            gradeTwoEnum = gradeTwoEnum;
+            Map<int, Map<String, dynamic>> rangeData = {};
+
+            // grab the grades in the range, inclusive of both
+            studentsData.forEach((k, v) {
+              if (v["grade"].index >= gradeOneEnum.index &&
+                  v["grade"].index <= gradeTwoEnum.index) {
+                rangeData[k] = v;
+              }
+            });
+
+            PrettyPrint().printTable(
+              rangeData,
+              titles: ["id", "name", "grade"],
+            );
+            sleep(Duration(milliseconds: 500));
+          } else {
+            print("Cannot perform on empty data");
           }
-
-          Grade? gradeTwoEnum;
-          switch (gradeTwo.toLowerCase()) {
-            case "a+":
-              gradeTwoEnum = Grade.aPlus;
-              break;
-            case "a":
-              gradeTwoEnum = Grade.A;
-              break;
-            case "b+":
-              gradeTwoEnum = Grade.bPlus;
-              break;
-            case "b":
-              gradeTwoEnum = Grade.B;
-              break;
-            case "c+":
-              gradeTwoEnum = Grade.cPlus;
-              break;
-            case "c":
-              gradeTwoEnum = Grade.C;
-              break;
-            case "d+":
-              gradeTwoEnum = Grade.dPlus;
-              break;
-            case "d":
-              gradeTwoEnum = Grade.D;
-              break;
-            case "f":
-              gradeTwoEnum = Grade.F;
-              break;
-          }
-
-          gradeOneEnum = gradeOneEnum ?? Grade.F;
-          gradeTwoEnum = gradeTwoEnum ?? Grade.F;
-          Map<int, Map<String, dynamic>> rangeData = {};
-          studentsData.forEach((k, v) {
-            if (v["grade"].index >= gradeOneEnum!.index &&
-                v["grade"].index <= gradeTwoEnum!.index) {
-              rangeData[k] = v;
-            }
-          });
-
-          PrettyPrint().printTable(rangeData, titles: ["id", "name", "grade"]);
-          sleep(Duration(milliseconds: 500));
 
           break;
       }
@@ -489,7 +400,6 @@ class PrettyPrint {
         for (var i in records.keys) {
           String rowString = "|${i.toString().padRight(columnSize)}|";
           for (var key in records[i].keys) {
-            // rowString += "${i.toString().padRight(columnSize)}|";
             String recordData =
                 records[i][key].toString().padRight(columnSize).length >
                     columnSize
