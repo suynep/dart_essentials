@@ -65,6 +65,7 @@ class ProblemOne implements IChooseableProblem {
   6: Evens
   */
 
+  /// Gets the input from user, and displays associated output from `outputs` map
   void getComputationChoice() {
     print("""
 
@@ -82,6 +83,7 @@ q: exit
 
     bool valid = true;
 
+    // iteration for getting input validity
     do {
       valid = true;
       stdout.write("Enter a choice: ");
@@ -151,6 +153,7 @@ q: exit
     } while (!valid);
   }
 
+  /// Brain of the program; performs all necessary computations and stores to `output` map
   /// call this AFTER calling getData, as that initializes our late input instance var
   @override
   void wrangleAndCompute() {
